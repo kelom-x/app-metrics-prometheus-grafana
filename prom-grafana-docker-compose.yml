@@ -1,0 +1,39 @@
+version: "2.3"
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - /home/ubuntu/Desktop/prom/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    networks:
+      - prometheus_grafana
+        
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - /home/ubuntu/Desktop/prom/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /home/ubuntu/Desktop/prom/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - /home/ubuntu/Desktop/prom/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - /home/ubuntu/Desktop/prom/grafana/dashboards:/etc/grafana/provisioning/dashboards/dashboards
+      - /home/ubuntu/Desktop/prom/grafana/grafana-piechart-panel:/var/lib/grafana/plugins
+      - grafana-storage:/var/lib/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+      - prometheus_grafana
+      
+
+networks:
+  prometheus_grafana:
+      driver: bridge
+
+volumes:
+  grafana-storage:
+      driver: local
+  prometheus_data:
+      driver: local
