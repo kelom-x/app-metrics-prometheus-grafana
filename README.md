@@ -23,5 +23,5 @@ add your datasources to this file
 
 grafana > grafana.ini
 ---------------------
-setup initial username and password in this file
+setup initial grafana username and password in this file
 
